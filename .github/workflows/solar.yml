@@ -6,7 +6,11 @@ on:
     branches:
       - main
       - feat--kodekloud
-
+env:
+  NODE_ENV: "staging"
+  MONGODB_URI: "mongodb+srv://jamajamadb.5cue4.mongodb.net/solar-system"
+  MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 jobs:
   unit-testing:
     name: "Run unit tests"
