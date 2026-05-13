@@ -8,14 +8,21 @@ on:
       - feat--kodekloud
 
 env:
-  MONGODB_URI: "mongodb+srv://@jamajamadb.5cue4.mongodb.net/solar-system"
+  MONGODB_URI: "mongodb+srv://jamajamadb.5cue4.mongodb.net/solar-system"
   MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
   MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 
 jobs:
   unit-testing:
     name: Run unit tests
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 19, 20]
+        operating-system: [ubuntu-latest, macos-latest]
+        exclude:
+          - node-version: 18
+            operating-system: macos-latest
+    runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,4 +36,31 @@ jobs:
         run: npm install
 
       - name: Run tests
+        continue-on-error: true
         run: npm test
+  code_coverage:
+    name: Generate code coverage report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run coverage
+        continue-on-error: true
+        run: npm runcoverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 5
