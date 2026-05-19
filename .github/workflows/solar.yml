@@ -96,7 +96,7 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Docker build for testing
+      - name: Docker build for testing...
         uses: docker/build-push-action@v4
         with:
           context: .
