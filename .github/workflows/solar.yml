@@ -70,17 +70,17 @@ jobs:
         id: nodejs-unit-testing-step
         run: npm test
 
-      - name: Run coverage
-        continue-on-error: true
-        run: npm runcoverage
+      # - name: Run coverage
+      #   continue-on-error: true
+      #   run: npm runcoverage
 
-      - name: Archive test result
-        if: steps.nodejs-unit-testing-step.outcome == 'failure' || steps.nodejs-unit-testing-step.outcome == 'success'
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report
-          path: coverage
-          retention-days: 5
+      # - name: Archive test result
+      #   if: steps.nodejs-unit-testing-step.outcome == 'failure' || steps.nodejs-unit-testing-step.outcome == 'success'
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: coverage-report
+      #     path: coverage
+      #     retention-days: 5
 
   docker:
     name: "containerize application"
@@ -96,8 +96,14 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: docker build -t solar-system-planet:latest .
+      - name: Docker build for testing
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: ${{ vars.DOCKER_USERNAME }}/solar-system-planet:${{ github.sha }}
+      # - name: Build Docker image
+      #   run: docker build -t solar-system-planet:latest .
 
       - name: Run Docker container
         run: docker run -d --name solar-system-planet-container solar-system-planet:latest
