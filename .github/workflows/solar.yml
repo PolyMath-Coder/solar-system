@@ -120,7 +120,7 @@ jobs:
           echo "Testing API endpoint..."
           wget -q -O - 127.0.0.1:3000/live | grep live
 
-      - name: Docker build for just testing...
+      - name: Actual docker push
         uses: docker/build-push-action@v4
         with:
           context: .
