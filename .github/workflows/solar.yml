@@ -124,7 +124,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: false
+          push: true
           tags: ${{ vars.DOCKER_USERNAME }}/solar-system-planet:${{ github.sha }}
       # - name: Run Docker container
       #   run: docker run -d --name solar-system-planet-container solar-system-planet:latest
