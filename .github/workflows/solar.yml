@@ -119,6 +119,13 @@ jobs:
           echo "Container IP: $IP"
           echo "Testing API endpoint..."
           wget -q -O - 127.0.0.1:3000/live | grep live
+
+      - name: Docker build for just testing...
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: ${{ vars.DOCKER_USERNAME }}/solar-system-planet:${{ github.sha }}
       # - name: Run Docker container
       #   run: docker run -d --name solar-system-planet-container solar-system-planet:latest
 
