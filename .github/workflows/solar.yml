@@ -136,7 +136,7 @@ jobs:
           push: true
           tags: |
             ${{ vars.DOCKER_USERNAME }}/solar-system-planet:${{ github.sha }}
-            ghcr.io/polymath-coder
+            ghcr.io/polymath-coder/solar-be
       # - name: Run Docker container
       #   run: docker run -d --name solar-system-planet-container solar-system-planet:latest
 
