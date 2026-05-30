@@ -96,6 +96,9 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: GHCR login
+        uses: docker/login-action@2.2.0
+
       - name: Docker build for just testing...
         uses: docker/build-push-action@v4
         with:
@@ -125,7 +128,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/solar-system-planet:${{ github.sha }}
+          tags: |
+            ${{ vars.DOCKER_USERNAME }}/solar-system-planet:${{ github.sha }}
+            ghcr.io/${{github.repository_owner}}/
       # - name: Run Docker container
       #   run: docker run -d --name solar-system-planet-container solar-system-planet:latest
 
